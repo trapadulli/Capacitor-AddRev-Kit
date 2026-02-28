@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+
+# macOS system files
+.DS_Store
+
+# Log files
+*.log
+
+# Build output
+build/
+dist/
+www/
+
+# Environment files
+.env
+
+# Xcode user data
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/App.xcworkspace/xcuserdata/
+
+# CocoaPods
+ios/App/Pods/
+ios/App/Podfile.lock
+
+# Xcode DerivedData (if present)
+ios/App/DerivedData/
+
+# Capacitor generated
+android/
+ios/
+
+# Asset generation
+assets/
+
+# Misc
+*.swp
+*.swo
+
+# Optional: local web build folder
+web/
+
+# App settings (contains keys)
+src/app.settings.ts

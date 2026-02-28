@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Capacitor AdRevKit</title>
+  </head>
+  <body>
+    <div id="app">This is the native wrapper placeholder. Replace with your web build files in /www.</div>
+    <div style="margin:20px">
+      <button id="testEcho" disabled>Test NativeBridge Echo</button>
+      <span id="echoResult" style="margin-left:10px"></span>
+      <span id="bridgeStatus" style="margin-left:10px;color:#666">(bridge: unknown)</span>
+    </div>
+    <script>
+      // Minimal Capacitor presence check
+      if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+        console.log('Running inside Capacitor native platform');
+      } else {
+        console.log('Running in browser fallback');
+      }
+
+      // Ensure the bridge is exposed on window as soon as Capacitor registers it
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeBridge) {
+        window.NativeBridge = window.Capacitor.Plugins.NativeBridge;
+      }
+
+  const testBtn = document.getElementById('testEcho');
+  const bridgeStatus = document.getElementById('bridgeStatus');
+
+  document.getElementById('testEcho').addEventListener('click', async function () {
+        try {
+          const NB = window.NativeBridge;
+          if (!NB || typeof NB.echo !== 'function') {
+            throw new Error('NativeBridge not available');
+          }
+          const res = await NB.echo({ message: 'hello from web' });
+          console.log('[test] echo response', res);
+          document.getElementById('echoResult').textContent = JSON.stringify(res);
+        } catch (e) {
+          console.error('[test] echo failed', e);
+          document.getElementById('echoResult').textContent = 'echo failed: ' + (e && e.message ? e.message : e);
+        }
+      });
+
+        // Diagnostic poll: log plugin presence for a short window after load and enable the button when ready
+        (function debugBridgePoll() {
+          let count = 0;
+          const id = setInterval(() => {
+            try {
+              const hasNB = !!window.NativeBridge && typeof window.NativeBridge.echo === 'function';
+              const hasCapNB = !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeBridge);
+              if (!hasNB && hasCapNB) {
+                window.NativeBridge = window.Capacitor.Plugins.NativeBridge;
+              }
+              // eslint-disable-next-line no-console
+              console.log('[bridge-debug] window.NativeBridge:', !!window.NativeBridge, typeof window.NativeBridge, 'ready:', hasNB);
+              // eslint-disable-next-line no-console
+              console.log('[bridge-debug] Capacitor.Plugins.NativeBridge:', hasCapNB, (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeBridge) ? typeof window.Capacitor.Plugins.NativeBridge : 'n/a');
+              // eslint-disable-next-line no-console
+              console.log('[bridge-debug] typeof NativeBridge.echo:', window.NativeBridge && typeof window.NativeBridge.echo);
+
+              // Update UI with bridge status
+              if (hasNB || hasCapNB) {
+                bridgeStatus.textContent = '(bridge: ready)';
+                testBtn.disabled = false;
+              } else {
+                bridgeStatus.textContent = '(bridge: not available yet)';
+                testBtn.disabled = true;
+              }
+            } catch (e) {
+              // eslint-disable-next-line no-console
+              console.warn('[bridge-debug] poll error', e);
+            }
+            count += 1;
+            if (count > 20) clearInterval(id);
+          }, 500);
+        })();
+    </script>
+  </body>
+</html>

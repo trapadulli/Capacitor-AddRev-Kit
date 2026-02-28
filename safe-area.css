@@ -1,0 +1,15 @@
+body {
+  background: #fff;
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footer, .bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #fff;
+}

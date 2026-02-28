@@ -1,0 +1,27 @@
+{
+  "configurationVersion" : 1,
+  "products" : [
+    {
+      "identifier" : "no_ads_monthy_99_cents",
+      "type" : "autoRenewable",
+      "subscriptionGroupIdentifier" : "no_ads_group",
+      "duration" : "P1M",
+      "contentVersion" : 1,
+      "price" : {
+        "locale" : "en_US",
+        "value" : "0.99"
+      },
+      "displayName" : "No Ads Monthly",
+      "introductoryOffer" : null
+    }
+  ],
+  "subscriptionGroups" : [
+    {
+      "identifier" : "no_ads_group",
+      "referenceName" : "No Ads Group",
+      "subscriptionProducts" : [
+        "no_ads_monthy_99_cents"
+      ]
+    }
+  ]
+}

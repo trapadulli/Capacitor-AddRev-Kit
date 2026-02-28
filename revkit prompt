@@ -1,0 +1,190 @@
+Understood. Stripping it down.
+
+Below is a development-focused summary you can drop into VS Code as a working brief.
+
+---
+
+# Project: Capacitor AdRevKit
+
+## Objective
+
+Build a clean, production-grade Capacitor WebView shell that includes:
+
+* Remote WebView loader
+* AdMob integration
+* RevenueCat subscription integration
+* Ads disabled when subscribed
+* Restore purchases
+* Network offline handling
+
+No auth.
+No multi-provider abstraction.
+No SaaS logic.
+No over-engineering.
+
+---
+
+# Scope Constraints
+
+Do not implement:
+
+* Stripe
+* Multi-provider billing abstraction
+* Auth system
+* User identity linking
+* Backend
+* Feature flags
+* Experiment frameworks
+
+Keep it iOS-first. Android optional later.
+
+---
+
+# Core Architecture
+
+## Folder Structure
+
+src/
+core/
+monetization.ts
+providers/
+admob.ts
+revenuecat.ts
+network/
+offline.tsx
+boot.ts
+
+---
+
+# Responsibilities
+
+## boot.ts
+
+* Initialize app
+* Initialize monetization system
+* Mount WebView
+* Mount Offline component
+
+No business logic here.
+
+---
+
+## core/monetization.ts
+
+Single orchestrator.
+
+Responsibilities:
+
+* init()
+* purchaseRemoveAds()
+* restorePurchases()
+* refreshEntitlements()
+* determine isPro
+* enable/disable ads based on isPro
+
+State exposed:
+
+{
+isPro: boolean
+adsEnabled: boolean
+}
+
+RevenueCat → entitlement
+Entitlement → ad state
+
+No UI logic inside.
+
+---
+
+## providers/revenuecat.ts
+
+Thin wrapper around RevenueCat SDK:
+
+* init()
+* purchase(productId)
+* restore()
+* getEntitlements()
+
+No app logic. No ad logic.
+
+---
+
+## providers/admob.ts
+
+Thin wrapper around AdMob plugin:
+
+* init()
+* showBanner()
+* hideBanner()
+* setEnabled(boolean)
+
+No entitlement logic.
+
+---
+
+## network/offline.tsx
+
+* Subscribe to Capacitor Network plugin
+* Track isOnline
+* Render blocking modal if offline
+* No business logic
+
+---
+
+# Flow
+
+1. App boots
+2. RevenueCat initialized
+3. Entitlements fetched
+4. If pro:
+
+   * Disable ads
+   * Hide banner
+5. If not pro:
+
+   * Enable ads
+   * Show banner
+
+On purchase:
+
+* Call RevenueCat purchase
+* Refresh entitlements
+* Re-evaluate ad state
+
+On restore:
+
+* Restore
+* Refresh entitlements
+* Re-evaluate ad state
+
+---
+
+# Engineering Constraints
+
+* No cross-module circular dependencies
+* No global mutable state outside monetization module
+* All async flows awaited properly
+* No silent failures
+* Clear error logging
+* Deterministic ad suppression
+
+---
+
+# Quality Bar
+
+The project should demonstrate:
+
+* Clean separation of concerns
+* Controlled side effects
+* Clear orchestration layer
+* Real-world edge case handling (offline, restore)
+
+Not:
+
+* Feature breadth
+* Over-configuration
+* Fancy abstraction
+
+---
+
+If you want, next I can give you a step-by-step implementation order so you don’t refactor twice.
