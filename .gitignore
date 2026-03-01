@@ -37,6 +37,9 @@ assets/
 *.swp
 *.swo
 
+# Jest coverage
+coverage/
+
 # Optional: local web build folder
 web/
 
