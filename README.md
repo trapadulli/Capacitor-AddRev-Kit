@@ -1,4 +1,4 @@
-# Capacitor AdRevKit
+# Capacitor AdRev Kit
 
 Boilerplate Capacitor native shell for wrapping any remote web application inside a Capacitor WebView for iOS (and optionally Android). Out-of-the-box paywall and ads integration using Revenue Cat and AdMob.
 
