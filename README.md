@@ -86,3 +86,6 @@ Add: `npm install @capacitor/admob` (or community plugin) and configure in nativ
 
 ## Splash & Icons
 Place source assets (1024x1024 icon, 2732x2732 splash) and run `npx @capacitor/assets generate`.
+
+Built and maintained by Stephan Vanwoezik [@trapadulli](https://github.com/trapadulli).
+
