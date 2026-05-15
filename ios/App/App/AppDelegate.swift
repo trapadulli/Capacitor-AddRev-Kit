@@ -13,8 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var reachability: SCNetworkReachability?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Initialize RevenueCat Purchases SDK
-    Purchases.configure(withAPIKey: "appl_HkwFejjXOokQAPfXDgtPodQDMoP")
+        if let revenueCatApiKey = resolveRevenueCatApiKey(), !revenueCatApiKey.isEmpty {
+            Purchases.configure(withAPIKey: revenueCatApiKey)
+        } else {
+            print("[config] RevenueCat API key not configured. Set RevenueCatAPIKey in Info.plist or NativeBridge.revenueCatApiKey in capacitor.config.ts")
+        }
         // Setup reachability for continuous monitoring
         setupReachability()
         // Initial connectivity check
@@ -152,5 +155,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController
+    }
+
+    private func resolveRevenueCatApiKey() -> String? {
+        if let fromPlist = Bundle.main.object(forInfoDictionaryKey: "RevenueCatAPIKey") as? String,
+           !fromPlist.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return fromPlist
+        }
+
+        guard let configUrl = Bundle.main.url(forResource: "capacitor.config", withExtension: "json"),
+              let data = try? Data(contentsOf: configUrl),
+              let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let plugins = root["plugins"] as? [String: Any],
+              let nativeBridge = plugins["NativeBridge"] as? [String: Any],
+              let apiKey = nativeBridge["revenueCatApiKey"] as? String,
+              !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return nil
+        }
+
+        return apiKey
     }
 }

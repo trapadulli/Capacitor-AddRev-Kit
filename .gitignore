@@ -1,47 +1,60 @@
-# Node modules
+# Dependencies
 node_modules/
 
-# macOS system files
-.DS_Store
-
-# Log files
-*.log
+# Lockfiles (project policy: keep tracked lockfiles in git)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
 
 # Build output
 build/
 dist/
 www/
+web/
+coverage/
+assets/
+*.tsbuildinfo
 
 # Environment files
 .env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# macOS system files
+.DS_Store
+
+# Editor temp files
+*.swp
+*.swo
 
 # Xcode user data
 ios/App/App.xcodeproj/xcuserdata/
 ios/App/App.xcworkspace/xcuserdata/
+ios/App.xcworkspace/xcuserdata/
+xcuserdata/
+*.xcuserstate
 
-# CocoaPods
+# iOS build artifacts
 ios/App/Pods/
 ios/App/Podfile.lock
-
-# Xcode DerivedData (if present)
 ios/App/DerivedData/
+ios/App/build/
+ios/App/output/
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+ios/App/App/config.xml
+DerivedData/
 
 # Capacitor generated
 android/
 ios/
 
-# Asset generation
-assets/
-
-# Misc
-*.swp
-*.swo
-
-# Jest coverage
-coverage/
-
-# Optional: local web build folder
-web/
+# Capacitor Cordova plugins (auto-installed)
+capacitor-cordova-ios-plugins/
 
 # App settings (contains keys)
 src/app.settings.ts

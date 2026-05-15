@@ -22,6 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-7740897938166443~3104243621</string>
+	<key>RevenueCatAPIKey</key>
+	<string>appl_HkwFejjXOokQAPfXDgtPodQDMoP</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>

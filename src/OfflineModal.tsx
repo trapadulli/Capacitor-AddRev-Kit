@@ -10,6 +10,7 @@ export function OfflineModal() {
       setOffline(!status.connected);
     });
     return () => {
+      // listener is a Promise<PluginListenerHandle> so await and remove when cleaning up
       listener.then(handle => handle.remove()).catch(() => {});
     };
   }, []);
