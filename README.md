@@ -1,4 +1,6 @@
-# capacitor
+# Capacitor AdRev Kit
+
+![AdRev](media/social_image.png)
 
 iOS native shell for **Capacitor AdRevKit**. A thin Capacitor wrapper that loads `https://your-remote-app.example.com` inside a native WebView and provides bridged native services: subscriptions (RevenueCat), advertising (AdMob), network status, and status bar control.
 
@@ -130,7 +132,8 @@ git restore -- ios/App/App/Info.plist
 The wrapped URL still comes from Capacitor config:
 
 ```typescript
-const REMOTE_URL = process.env.CAP_SERVER_URL || "https://your-remote-app.example.com";
+const REMOTE_URL =
+  process.env.CAP_SERVER_URL || "https://your-remote-app.example.com";
 ```
 
 `allowNavigation` is locked to `your-remote-app.example.com`. Add any additional domains (e.g. OAuth redirect hosts) there before syncing.
